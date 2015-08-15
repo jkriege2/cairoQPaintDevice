@@ -20,19 +20,20 @@
 #
 
 
-#include(../../extlibs/cairo.pri)
+# if used as part of Qt, uncoment this:
+include(../../extlibs/cairo.pri)
+include(../../extlibs/png.pri)
+include(../../extlibs/zlib.pri)
 
-INCLUDEPATH +=  cairo pixman-1
-LIBS +=  -lcairo -lpixman-1 -lz -lpng
-DEFINES += QF_HAS_LIBCAIRO QF_HAS_LIBPIXMAN
+# otherwise you'll have to provide cairo and png as an external library:
+#INCLUDEPATH +=  cairo pixman-1
+#LIBS +=  -lcairo -lpixman-1 -lz -lpng
+
 win32:LIBS += -lgdi32
 
 QT       += core gui
-
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = cairoQPaintDevice_test
-#CONFIG   += console
-#CONFIG   -= app_bundle
-
 TEMPLATE = app
 
 

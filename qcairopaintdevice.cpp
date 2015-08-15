@@ -23,6 +23,7 @@ Copyright (c) 2008-2015 Jan W. Krieger (<jan@jkrieger.de>, <j.krieger@dkfz.de>),
 #include "qcairopaintdevice.h"
 #include "qcairopaintengine.h"
 #include <QDebug>
+#include <QtGlobal>
 
 QCairoPaintDevice::QCairoPaintDevice(const QSizeF &size, const QString &fileName, CairoFileType filetype, bool exportText):
     QPaintDevice()
@@ -94,8 +95,12 @@ int QCairoPaintDevice::metric(QPaintDevice::PaintDeviceMetric metric) const
         case QPaintDevice::PdmDpiY:
         case QPaintDevice::PdmPhysicalDpiY:
             return ydpi;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+        case QPaintDevice::PdmDevicePixelRatio:
+            return 1;
+#endif
         default:
-            qWarning ("QCairoPaintDevice::Strange metric asked");
+            qWarning (QString("QCairoPaintDevice::Strange metric asked: %1").arg(metric).toLatin1().data());
             return 0;
     }
 }
